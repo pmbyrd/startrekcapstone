@@ -8,7 +8,7 @@ This file while handle the blueprint registration, the creation of the Flask app
 from flask import Flask
 
 from config import Config
-from app.extensions import db, migrate, login_manager
+# from app.extensions import db, migrate, login_manager
 
 #TODO - Be sure to import each blueprint here before registering them
 
@@ -16,22 +16,36 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # *Initialize the Flask extensions here*
-    db.init_app(app)
-    migrate.init_app(app, db)
-    login_manager.init_app(app)
+    # Initialize Flask extensions here
 
-    # *Register the blueprints here*
+    # Register blueprints here
 
-    #FIXME - Testing routes
-    @app.route('/')
-    def index():
-        return '<h1>Hello, World!</h1>'
-
-    # *Initialize the app context here*
-    with app.app_context():
-        db.init_db()
+    @app.route('/test/')
+    def test_page():
+        return '<h1>Testing the Flask Application Factory Pattern</h1>'
 
     return app
+
+# def create_app(config_class=Config):
+#     app = Flask(__name__)
+#     app.config.from_object(config_class)
+
+#     # *Initialize the Flask extensions here*
+#     db.init_app(app)
+#     migrate.init_app(app, db)
+#     login_manager.init_app(app)
+
+#     # *Register the blueprints here*
+
+#     #FIXME - Testing routes
+#     @app.route('/')
+#     def index():
+#         return '<h1>Hello, World!</h1>'
+
+#     # # *Initialize the app context here*
+#     # with app.app_context():
+#     #     db.init_db()
+
+#     return app
 
 
