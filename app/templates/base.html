@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Trek {% endblock %}</title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
+</head>
+<body>
+   
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a href="/">Home</a>
+            <a href="#">Posts</a>
+            <a href="#">Categories</a>
+            <a href="#">Questions</a>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" style="margin-top: 70px; margin-bottom: 70px;">
+        {% block content %} 
+        <!-- Main content here -->
+       
+        {% endblock %}
+      </div>
+
+
+<footer id="sticky-footer" class="footer fixed-bottom flex-shrink-0 py-4 bg-dark text-white-50">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a href="" class="navbar-brand" id="trek-contact">Contacts</a>
+            <a href="" class="navbar-brand" id="trek-credits">Credits</a></nav>
+    <div class="container text-center">
+        <small>Copyright &copy; MY WEBSITE NAME TBD</small>
+      </div>
+</footer>
+</body>
+</html>
