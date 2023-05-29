@@ -23,7 +23,7 @@ class User(db.Model):
         bio: A string representing the user's bio.
         location: A string representing the user's location.
         
-    """
+"""
     __tablename__ = "users"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
