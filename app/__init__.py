@@ -14,6 +14,7 @@ from .extensions import db, migrate
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.config['SECRET_KEY'] = 'you-will-never-guess'
 
     # Initialize Flask extensions here
     db.init_app(app)
@@ -26,8 +27,6 @@ def create_app(config_class=Config):
     app.register_blueprint(posts_bp)
     from app.trek_blueprints.users import users as users_bp
     app.register_blueprint(users_bp)
-    
-
     
     return app
 
