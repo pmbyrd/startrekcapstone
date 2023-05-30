@@ -2,6 +2,7 @@ from flask import render_template, redirect, flash
 from sqlalchemy.exc import IntegrityError
 from app.extensions import db
 from app.trek_blueprints.users import users
+from app.trek_blueprints.users.models.user import User, DEFAULT_IMAGE_URL
 from app.trek_blueprints.users.forms.signup import AddUserForm
 from app.main.routes import test
 
@@ -39,13 +40,19 @@ def create_user():
 
             db.session.add(new_user)
             db.session.commit()
+            print ("""*************************************
+            {new_user.username} created successfully
+            *************************************""")
             flash("User created successfully", 'success')
         except IntegrityError:
             flash("Username or email already taken", 'danger')
-            return redirect('/users/signup')
+            return redirect('/signup')
         
-            #TODO - 1. implementent login functionality
+            #TODO - 1. implement login functionality
             #TODO - 2. redirect to the user's profile page
             #NOTE - return redirect(f'/users/{new_user.id}')
-    return redirect('/users/signup')
+    return redirect('/secret')
 
+@users.route('/secret')
+def secret():
+    return render_template('secret.html')

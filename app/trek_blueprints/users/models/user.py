@@ -56,7 +56,7 @@ class User(db.Model):
     
     
     @classmethod
-    def signup(cls, username, email, password, first_name, last_name, avatar, bio):
+    def signup(cls, username, email, password, first_name, last_name, avatar, bio, location):
         """Signs up a user: hashes their password and adds user to system."""
         
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
@@ -68,7 +68,8 @@ class User(db.Model):
             first_name=first_name,
             last_name=last_name,
             avatar=avatar,
-            bio=bio
+            bio=bio,
+            location=location
         )
         
         db.session.add(user)
@@ -90,6 +91,4 @@ class User(db.Model):
                 
         return False
     
-
-#create a fake user
-user = User()   
+    

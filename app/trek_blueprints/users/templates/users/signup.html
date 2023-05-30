@@ -9,11 +9,12 @@ Testing the add a new user page
 <div class="row justify-content-md-center">
     <div class="col-md-7 col-lg-5">
         <h1>this is the signup page</h1>
-        <h2 class="join-message">Join Warbler today.</h2>
-        <form action="">
+        <h2 class="join-message">Wish to start trekking</h2>
+        <p class="join-message">Sign up for an account</p>
+        <!-- TODO make sure the form is going somewhere on summit -->
+        <form method="POST"> 
             <!-- include the hidden tag -->
             {{ form.hidden_tag() }}
-            <!-- include the username field -->
             {% for field in form if field.widget.input_type != 'hidden' %}
             {% for error in field.errors %}
             <span class="text-danger">{{ error }}</span>
