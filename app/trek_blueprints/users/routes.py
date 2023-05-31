@@ -4,11 +4,43 @@ from app.extensions import db
 from app.trek_blueprints.users import users
 from app.trek_blueprints.users.models.user import User, DEFAULT_IMAGE_URL
 from app.trek_blueprints.users.forms.signup import AddUserForm
-from app.main.routes import test
+
+# #NOTE - For quick testing importing random for random users
+from random import sample
+# @users.route('/')
+# def index():
+#     return render_template('users/index.html')
 
 @users.route('/')
-def index():
-    return render_template('users/index.html')
+def users_index():
+    """Shows users in the database"""
+
+    users_all = User.query.all()
+    # sample only 50 random users
+    users = sample(users_all, 50)
+    return render_template('users/show_users.html', users=users)
+
+
+@users.route('/test/<int:user_id>')
+def test(user_id):
+    """Retrieves and displays a user by their id"""
+    user = User.query.get_or_404(user_id)
+    return render_template('users/test.html', user=user)
+    
+
+@users.route('/users/<int:user_id>')
+def show_user(user_id):
+    """Retrieves and displays a user by their id"""
+    user = User.query.get_or_404(user_id)
+    import pdb; pdb.set_trace()
+    return render_template('users/show.html', user=user)
+
+    
+@users.route('/users/<int:user_id>/profile')
+def show_user_profile(user_id):
+    """Retrieves and displays a user by their id"""
+    user = User.query.get_or_404(user_id)
+    return render_template('users/user.html', user=user)
 
 @users.route('/signup')
 def new_user():
@@ -16,6 +48,7 @@ def new_user():
     
     signup_form = AddUserForm()
     return render_template('users/signup.html', form=signup_form)
+
 
 @users.route('/signup', methods=['POST'])
 def create_user():
@@ -30,7 +63,7 @@ def create_user():
                 password=form.password.data,
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
-                avatar=form.avatar.data,
+                avatar=form.avatar.data or DEFAULT_IMAGE_URL,
                 bio=form.bio.data,
                 location=form.location.data
             )
@@ -50,23 +83,13 @@ def create_user():
             #TODO - 2. redirect to the user's profile page
             #NOTE - return redirect(f'/users/{new_user.id}')
     return redirect('/signup')
-        
-@users.route('users/secret')
+
+
+@users.route('/users/secret')
 def secret():
     return render_template('users/secret.html')
 
-@users.route('/<int:user_id>')
-def show_user(user_id):
-    """Shows a user's profile page"""
-    
-    #TODO - show a user's profile page
-    user = User.query.get_or_404(user_id)
-    return render_template('users/show.html', user=user)
-
-@users.route('/<int:user_id>/edit')
-def edit_user(user_id):
-    """Renders a form to edit a user's profile"""
-    
-    #TODO - render a form to edit a user's profile
-    user = User.query.get_or_404(user_id)
-    return render_template('users/edit.html', user=user)
+#     #TODO - show a user's profile page
+#     #TODO - render a form to edit a user's profile
+#     #TODO - show a user's profile page
+#     #TODO - render a form to edit a user's profile

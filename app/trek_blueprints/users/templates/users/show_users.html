@@ -1,0 +1,20 @@
+{% extends "base.html"%}
+{% block content %}
+This is the default page for the all users page
+<!-- loop through the random generated users and display them all to the page -->
+
+<ul>
+    {% for user in users %}
+    <li>
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{user.username}}</h5>
+              <p class="card-text">{{user.bio}}</p>
+              <a href="/users/test/{{user.id}}" class="btn btn-primary">See this user's profile</a>
+            </div>
+          </div>
+    </li>
+    {%endfor%}
+</ul>
+{% endblock %}

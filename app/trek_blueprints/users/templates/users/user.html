@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1> {% block title%} Profile Page {% endblock%}</h1>
+
+<div class="container">
+    <div class="user">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="user-img">
+                    <img src="{{user.avatar}}" alt="user-image">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="user-info">
+                    <h2>{{user.username}}</h2>
+                    <p>{{user.bio}}</p>
+                    <p>{{user.email}}</p>
+                </div>
+            </div>
+        </div>
+        <!-- link to edit user or delete user -->
+        <div class="row">
+            <div class="col-md-4">
+                <a href="{{url_for('users.edit', user_id=user.id)}}">Edit Profile</a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{url_for('users.delete', user_id=user.id)}}">Delete Profile</a>
+            </div>
+    </div>
+</div>
