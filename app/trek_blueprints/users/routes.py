@@ -14,16 +14,13 @@ def index():
 def new_user():
     """Renders a form to create a new user"""
     
-    #TODO - create a form to create a new user
     signup_form = AddUserForm()
-
     return render_template('users/signup.html', form=signup_form)
 
 @users.route('/signup', methods=['POST'])
 def create_user():
     """Creates a new user"""
     
-    #TODO - create a new user
     form = AddUserForm()
     if form.validate_on_submit():
         try:
@@ -57,3 +54,19 @@ def create_user():
 @users.route('users/secret')
 def secret():
     return render_template('users/secret.html')
+
+@users.route('/<int:user_id>')
+def show_user(user_id):
+    """Shows a user's profile page"""
+    
+    #TODO - show a user's profile page
+    user = User.query.get_or_404(user_id)
+    return render_template('users/show.html', user=user)
+
+@users.route('/<int:user_id>/edit')
+def edit_user(user_id):
+    """Renders a form to edit a user's profile"""
+    
+    #TODO - render a form to edit a user's profile
+    user = User.query.get_or_404(user_id)
+    return render_template('users/edit.html', user=user)
