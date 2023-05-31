@@ -16,7 +16,10 @@ def create_app(config_class=Config):
     app.config['SECRET_KEY'] = 'you-will-never-guess'
     # Initialize Flask extensions here
     db.init_app(app)
+    # db.create_all()
     migrate.init_app(app, db)
+    with app.app_context():
+        db.create_all()
 
     # Register blueprints here
     from app.main import main as main_bp
@@ -27,28 +30,3 @@ def create_app(config_class=Config):
     app.register_blueprint(users_bp)
     
     return app
-
-
-# def create_app(config_class=Config):
-#     app = Flask(__name__)
-#     app.config.from_object(config_class)
-
-#     # *Initialize the Flask extensions here*
-#     db.init_app(app)
-#     migrate.init_app(app, db)
-#     login_manager.init_app(app)
-
-#     # *Register the blueprints here*
-
-#     #FIXME - Testing routes
-#     @app.route('/')
-#     def index():
-#         return '<h1>Hello, World!</h1>'
-
-#     # # *Initialize the app context here*
-#     # with app.app_context():
-#     #     db.init_db()
-
-#     return app
-
-

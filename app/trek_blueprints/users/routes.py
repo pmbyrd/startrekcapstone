@@ -44,6 +44,7 @@ def create_user():
             {new_user.username} created successfully
             *************************************""")
             flash("User created successfully", 'success')
+            return redirect('users/secret')
         except IntegrityError:
             flash("Username or email already taken", 'danger')
             return redirect('/signup')
@@ -51,8 +52,8 @@ def create_user():
             #TODO - 1. implement login functionality
             #TODO - 2. redirect to the user's profile page
             #NOTE - return redirect(f'/users/{new_user.id}')
-    return redirect('/secret')
-
-@users.route('/secret')
+    return redirect('/signup')
+        
+@users.route('users/secret')
 def secret():
-    return render_template('secret.html')
+    return render_template('users/secret.html')
