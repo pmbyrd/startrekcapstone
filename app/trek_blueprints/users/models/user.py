@@ -1,7 +1,9 @@
 """This module contains the user model for the database."""
 
 from app.extensions import db
-from flask_bcrypt import Bcrypt 
+from flask_bcrypt import Bcrypt
+#NOTE adding flask_login
+from flask_login import UserMixin
 
 
 bcrypt = Bcrypt()
@@ -9,7 +11,7 @@ bcrypt = Bcrypt()
 DEFAULT_IMAGE_URL = "https://loading.io/icon/tpi8gu"
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """Creates a user model for the database.
     
     Attributes:
@@ -77,7 +79,7 @@ class User(db.Model):
     
     
     @classmethod
-    def authenticate(cls, username, password, email):
+    def authenticate(cls, username, password):
         """Find user with `username` and `password`. If found, return user, else return False."""
         
         user = cls.query.filter_by(username=username).first()

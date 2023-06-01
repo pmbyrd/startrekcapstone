@@ -1,13 +1,11 @@
 {% extends "base.html" %}
+{% block title %} Login {% endblock %}
 {% block content %}
 
-<!-- Todo pass in and render the form for a user being able to edit their own profile -->
-
-This is the user edit page
-<!-- pass in a bootstrap form control -->
+<h1>Login</h1>
 <div class="row justify-content-md-center">
-    <h2>edit user profile</h2>
-    <form method="POST" id="edit_user_form">
+    <h2>Login</h2>
+    <form method="POST" id="login_form">
         {{ form.hidden_tag() }}
         {% for field in form if field.widget.input_type != 'hidden' %}
         {% for error in field.errors %}
@@ -15,8 +13,9 @@ This is the user edit page
         {% endfor %}
         {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
-        <button class="btn btn-primary btn-lg btn-block">Edit Profile</button>
+
+        <button class="btn btn-primary btn-lg btn-block">Login</button>
     </form>
-    <a href="/users/{{user.id}}/profile">Go Back</a>
 </div>
+
 {% endblock %}

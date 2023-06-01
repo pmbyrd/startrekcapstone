@@ -1,4 +1,5 @@
 from flask import render_template, redirect, flash
+from flask_login import login_user
 from sqlalchemy.exc import IntegrityError
 from app.extensions import db
 from app.trek_blueprints.users import users
@@ -6,7 +7,8 @@ from app.trek_blueprints.users.models.user import User, DEFAULT_IMAGE_URL
 from app.trek_blueprints.users.forms.signup import AddUserForm
 from app.trek_blueprints.users.forms.edit import EditUserForm
 from app.trek_blueprints.users.forms.delete import DeleteUserForm
-
+from app.trek_blueprints.users.forms.login import LoginForm
+from flask_login import login_required, current_user
 # #NOTE - For quick testing importing random for random users
 from random import sample
 # @users.route('/')
@@ -72,7 +74,7 @@ def create_user():
             {new_user.username} created successfully
             *************************************""")
             flash("User created successfully", 'success')
-            return redirect('users/secret')
+            return redirect(f'/users/{new_user.id}/profile')
         except IntegrityError:
             flash("Username or email already taken", 'danger')
             return redirect('/signup')
@@ -82,10 +84,6 @@ def create_user():
             #NOTE - return redirect(f'/users/{new_user.id}')
     return redirect('/signup')
 
-
-@users.route('/users/secret')
-def secret():
-    return render_template('users/secret.html')
 
     # TODO - show a user's profile page
 @users.route('/<int:user_id>/profile')
@@ -142,6 +140,55 @@ def delete_user_profile(user_id):
         return redirect('/')
     
     return render_template('users/delete.html', user=user, form=delete_form)
+
+#TODO - 1. implement login functionality
+@users.route('/login')
+def login():
+    """Renders a form to login a user"""
+    
+    login_form = LoginForm()
+    return render_template('users/login.html', form=login_form)
+
+@users.route('/login', methods=['POST'])
+def login_user():
+    """Logs in a user"""
+    # I need to check if the user exist and if the password is correct
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.authenticate(
+            login_form.username.data,
+            login_form.password.data
+        )
+        if user:
+            login_user(user, )
+            flash(f"Welcome back, {user.username}!", 'success')
+            import pdb; pdb.set_trace()
+            return redirect(f'/users/{user.id}/profile')
+        
+        else:
+            flash("Invalid credentials", 'danger')
+            return redirect('/users/login')
+    return render_template('users/login.html', form=login_form)
+
+
+# @users.route('/login', methods=['GET', 'POST'])
+# def login():
+    # """Renders a form to login a user"""
+    # 
+    # login_form = LoginForm()
+    # if login_form.validate_on_submit():
+        # user = User.query.filter_by(username=login_form.username_or_email.data).first()
+    #     # if user and user.check_password(login_form.password.data):
+    #         login_user(user, remember=login_form.remember_me.data)
+    #         # flash(f"Welcome back, {user.username}!", 'success')
+    #         # import pdb; pdb.set_trace()
+    #         # return redirect(f'/users/{user.id}/profile')
+    #     else:
+    #         flash("Invalid credentials", 'danger')
+    #         return redirect('/users/login')
+    # # return render_template('users/login.html', form=login_form)
+# 
+
 
 #     #TODO - show a user's profile page
 #     #TODO - render a form to edit a user's profile'

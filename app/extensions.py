@@ -14,5 +14,5 @@ from flask_login import LoginManager
 
 db = SQLAlchemy()
 migrate = Migrate()
-# login_manager = LoginManager()
+login_manager = LoginManager()
 #STUB - 2021-07-20 - 11:00 - https://flask-login.readthedocs.io/en/latest/#configuring-loginmanager
