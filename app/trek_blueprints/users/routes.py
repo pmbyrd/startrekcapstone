@@ -4,6 +4,8 @@ from app.extensions import db
 from app.trek_blueprints.users import users
 from app.trek_blueprints.users.models.user import User, DEFAULT_IMAGE_URL
 from app.trek_blueprints.users.forms.signup import AddUserForm
+from app.trek_blueprints.users.forms.edit import EditUserForm
+from app.trek_blueprints.users.forms.delete import DeleteUserForm
 
 # #NOTE - For quick testing importing random for random users
 from random import sample
@@ -25,22 +27,18 @@ def users_index():
 def test(user_id):
     """Retrieves and displays a user by their id"""
     user = User.query.get_or_404(user_id)
+    # import pdb; pdb.set_trace()
     return render_template('users/test.html', user=user)
     
 
-@users.route('/users/<int:user_id>')
+@users.route('/user/<int:user_id>')
 def show_user(user_id):
     """Retrieves and displays a user by their id"""
     user = User.query.get_or_404(user_id)
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     return render_template('users/show.html', user=user)
 
     
-@users.route('/users/<int:user_id>/profile')
-def show_user_profile(user_id):
-    """Retrieves and displays a user by their id"""
-    user = User.query.get_or_404(user_id)
-    return render_template('users/user.html', user=user)
 
 @users.route('/signup')
 def new_user():
@@ -89,7 +87,61 @@ def create_user():
 def secret():
     return render_template('users/secret.html')
 
-#     #TODO - show a user's profile page
+    # TODO - show a user's profile page
+@users.route('/<int:user_id>/profile')
+def show_user_profile(user_id):
+    """Retrieves a user profile by their id for authorized users"""
+
+    #FIXME - add authorization, needs to be global
+    user = User.query.get_or_404(user_id)
+    return render_template('users/profile.html', user=user)
+
+
 #     #TODO - render a form to edit a user's profile
+@users.route('/<int:user_id>/edit', methods=['GET', 'POST'])
+def edit_user_profile(user_id):
+    """Retrieves a user profile by their id for authorized users"""
+
+    user = User.query.get_or_404(user_id)
+    #FIXME - add authorization, needs to be global
+    edit_form = EditUserForm(obj=user)
+
+    if edit_form.validate_on_submit():
+        user.username = edit_form.username.data
+        user.email = edit_form.email.data
+        #FIXME - add a method to check if the password is correct and if it is, update it
+        user.password = edit_form.password.data
+        user.first_name = edit_form.first_name.data
+        user.last_name = edit_form.last_name.data
+        user.avatar = edit_form.avatar.data
+        user.bio = edit_form.bio.data
+        user.location = edit_form.location.data
+
+        db.session.commit()
+        flash("User updated successfully", 'success')
+        return redirect(f'/users/{user.id}/profile')
+    
+    return render_template('users/edit.html', user=user, form=edit_form)
+
+#     #TODO - render a form to delete a user's profile
+@users.route('/<int:user_id>/delete', methods=['GET', 'POST'])
+def delete_user_profile(user_id):
+    """Retrieves a user profile by their id for authorized users"""
+
+    user = User.query.get_or_404(user_id)
+    #FIXME - add authorization, needs to be global
+    delete_form = DeleteUserForm(obj=user)
+
+    if delete_form.validate_on_submit():
+        user.username = delete_form.username.data
+        user.password = delete_form.password.data
+
+        db.session.delete(user)
+        db.session.commit()
+        flash("User deleted successfully", 'success')
+        return redirect('/')
+    
+    return render_template('users/delete.html', user=user, form=delete_form)
+
 #     #TODO - show a user's profile page
-#     #TODO - render a form to edit a user's profile
+#     #TODO - render a form to edit a user's profile'

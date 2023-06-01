@@ -4,6 +4,21 @@
 
 {% block content %}
 
-Testing user profile page
+<h1>Profile of {{user.username}}</h1>
+<img src="{{user.avatar}}" alt="">
+</p>
+<p>
+    <a href="/users/{{user.id}}/edit">Edit Profile</a>
+</p>
+<p>
+<ul>
+    <li>Username: {{user.username}}</li>
+    <li>Bio: {{user.bio}}</li>
+    <li>Email: {{user.email}}</li>
+</ul>
+</p>
 
+<p>
+    delete account <a href="/users/{{user.id}}/delete">here</a>
+</p>
 {% endblock %}

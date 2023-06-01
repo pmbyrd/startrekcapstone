@@ -1,13 +1,13 @@
-{% extends "base.html" %}
+{% extends "base.html"%}
+{% block title %} Delete User {% endblock %}
 {% block content %}
 
-<!-- Todo pass in and render the form for a user being able to edit their own profile -->
+<h1>This is the page to delete a user</h1>
 
-This is the user edit page
-<!-- pass in a bootstrap form control -->
 <div class="row justify-content-md-center">
-    <h2>edit user profile</h2>
-    <form method="POST" id="edit_user_form">
+    <h3>are your sure your want to delete your account?</h3>
+    <h4 class="text-danger">this can not be undone</h4>
+    <form method="POST" id="delete_user_form">
         {{ form.hidden_tag() }}
         {% for field in form if field.widget.input_type != 'hidden' %}
         {% for error in field.errors %}
@@ -15,6 +15,7 @@ This is the user edit page
         {% endfor %}
         {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
-        <button class="btn btn-primary btn-lg btn-block">Edit Profile</button>
+        <button class="btn btn-primary btn-lg btn-block">Delete Account</button>
 </div>
+
 {% endblock %}
